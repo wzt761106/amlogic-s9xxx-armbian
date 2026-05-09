@@ -1201,7 +1201,9 @@ refactor_rootfs() {
 
     # Optimize systemd-osc-context for SSH
     osc_file="usr/lib/systemd/profile.d/80-systemd-osc-context.sh"
-    grep -q "SSH_CLIENT" "${osc_file}" || sed -i '/\[ "${TERM:-dumb}" = "dumb" \]/a [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" ]] && return 0' "${osc_file}"
+    [[ -f "${osc_file}" ]] && {
+        grep -q "SSH_CLIENT" "${osc_file}" || sed -i '/\[ "${TERM:-dumb}" = "dumb" \]/a [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" ]] && return 0' "${osc_file}"
+    }
 
     # Get random macaddr
     mac_hexchars="0123456789ABCDEF"
